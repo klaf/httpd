@@ -278,7 +278,7 @@ void parseWebRequest(char * req, int sock, int num_read){
                 "</html>\n";
         fprintf(logfile, "Full request is as follows: %s\n", req);
 	fflush(logfile);
-        sscanf(req, "%s %s %s", method, url, protocol);
+        sscanf(req, "%128s %128s %128s", method, url, protocol);
         if (strcmp (protocol, "HTTP/1.0") && strcmp (protocol, "HTTP/1.1")) {
                 /* We don't understand this protocol.  Report a bad response.  */
                 fprintf(logfile, "We did not understand the request.\n");
@@ -301,7 +301,7 @@ void parseWebRequest(char * req, int sock, int num_read){
                 fflush(logfile);
 
                 fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
-                sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
+                sprintf(fullpath, "%128s%128s", conf.webroot, htmlfile);
                 fprintf(logfile, "full path is %s\n", fullpath);
                 fflush(logfile);
 
@@ -309,7 +309,7 @@ void parseWebRequest(char * req, int sock, int num_read){
         else {
                 strncpy(htmlfile, url, sizeof(htmlfile));
                 fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
-                sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
+                sprintf(fullpath, "%128s%128s", conf.webroot, htmlfile);
                 fprintf(logfile, "full path is %s\n", fullpath);
                 fflush(logfile);
 
@@ -357,8 +357,6 @@ void parseWebRequest(char * req, int sock, int num_read){
 
 
         }
-
-
 
 
 }
