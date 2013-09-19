@@ -301,7 +301,7 @@ void parseWebRequest(char * req, int sock, int num_read){
                 fflush(logfile);
 
                 fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
-                sprintf(fullpath, "%128s%128s", conf.webroot, htmlfile);
+                sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
                 fprintf(logfile, "full path is %s\n", fullpath);
                 fflush(logfile);
 
@@ -309,7 +309,7 @@ void parseWebRequest(char * req, int sock, int num_read){
         else {
                 strncpy(htmlfile, url, sizeof(htmlfile));
                 fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
-                sprintf(fullpath, "%128s%128s", conf.webroot, htmlfile);
+                sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
                 fprintf(logfile, "full path is %s\n", fullpath);
                 fflush(logfile);
 
