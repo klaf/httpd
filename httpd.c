@@ -75,8 +75,8 @@ void read_config(char * f) {
         else {
                 printf("Config file: %s successfully opened!\n", f);
                 if(fscanf(cfile, "PORT=%d\nWEBROOT=%128s\nLOGDIR=%128s\nLOG=%128s", &conf.port, conf.webroot, conf.logdir, conf.log) == 4) {
-                        if(conf.port > 8888) {
-                                syslog(LOG_ERR, "Error! port number is greater than 8888. Exiting. :(");
+                        if(conf.port < 1025 && conf.port > 65534) {
+                                syslog(LOG_ERR, "Error! port number not in range 1025 - 65534. Choose another port. :(");
                                 closelog();
                                 fclose(cfile);
                                 exit(EXIT_FAILURE);
