@@ -296,7 +296,7 @@ void parseWebRequest(char * req, int sock, int num_read){
     else {
       /* A valid request.  Process it.  */
         if(strncmp(url, "/\0", 2)==0 ) {
-                strcpy(htmlfile, "/index.html");
+                strncpy(htmlfile, "/index.html", sizeof(htmlfile));
                 fprintf(logfile, "html file is %s\n", htmlfile);
                 fflush(logfile);
 
