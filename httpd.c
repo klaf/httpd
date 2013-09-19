@@ -5,19 +5,13 @@
  *
  *
  * TODO LIST:
- * 		1. Log cwd at startup and use this to open the log file
- *		2. Clean code and modularize
- *      3. Add logger
- *		4. Add threading
- *		5. Add signals
- *		6. Add HTTP POST
- *		7. Secure, secure, secure!
+ *		1. Clean code and modularize
+ *      	2. Add logger
+ *		3. Add threading
+ *		4. Add signals
+ *		5. Add HTTP POST
+ *		6. Secure, secure, secure!
  */
- 
-
-
-
-
 
 #include <stdio.h>
 #include <stdlib.h>      // used for exit(int)
