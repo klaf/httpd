@@ -5,12 +5,13 @@
  *
  *
  * TODO LIST:
- *		1. Clean code and modularize
- *      	2. Add logger
- *		3. Add threading
- *		4. Add signals
- *		5. Add HTTP POST
- *		6. Secure, secure, secure!
+ *		1. Add support for $HOME instead of hard linking to /home/sj/
+ *		2. Clean code and modularize
+ *      	3. Add logger
+ *		4. Add threading
+ *		5. Add signals
+ *		6. Add HTTP POST
+ *		7. Secure, secure, secure!
  */
 
 #include <stdio.h>
@@ -306,7 +307,7 @@ void parseWebRequest(char * req, int sock, int num_read){
 
         }
         else {
-                strcpy(htmlfile, url);
+                strncpy(htmlfile, url, sizeof(htmlfile));
                 fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
                 sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
                 fprintf(logfile, "full path is %s\n", fullpath);
