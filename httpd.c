@@ -227,7 +227,7 @@ void sockify() {
 void parseWebRequest(char * req, int sock, int num_read){
         int fd, nread,i;
         FILE *hfile = NULL;
-        char *fullpath, *reqline[3], method[128], url[128], buf[1024], protocol[128], htmlfile[128];
+        char *fullpath, method[128], url[128], buf[1024], protocol[128], htmlfile[128];
         struct stat file_stats;
         char * ok_response =
                 "HTTP/1.0 200 OK\n"
