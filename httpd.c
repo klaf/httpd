@@ -330,7 +330,7 @@ void parseWebRequest(char * req, int sock, int num_read){
                 hfile = fopen(fullpath, "r");
                 if(hfile == NULL){
                         fprintf(logfile, "Error opening: %s\n", fullpath);
-						                       fflush(logfile);
+		        fflush(logfile);
                         write (sock, verboten_response, strlen (verboten_response));
 
 
