@@ -4,13 +4,12 @@
  *  Licensed under GPLv2. See the LICENSE file for details.
  * 
  * 
- *  TODO LIST:
- *          1. Clean code and modularize
- *          2. Add logger
- *          3. Add threading
- *          4. Add signals
- *          5. Add HTTP POST
- *          6. Secure, secure, secure!
+ *  v0.2 TODO LIST:
+ *          	1. Add logger
+ *          	2. Add threading
+ *          	3. Add signals
+ *          	4. Add HTTP POST
+ *          	5. Secure, secure, secure!
  *
  */
 
