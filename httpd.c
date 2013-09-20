@@ -49,7 +49,8 @@ struct sockaddr_in serv_addr;
 char sendBuff[8192];
 char recvBuff[8192];
 int r, s, t;
-int main(void) {
+int main(void) 
+{
         enable_syslog();
         read_config(conffile);
 	open_log(conf.logdir, conf.log);
@@ -57,7 +58,6 @@ int main(void) {
         sockify();
         closelog();
         return 0;
-
 }
 
 /* read config
@@ -65,11 +65,12 @@ int main(void) {
  * we use fscanf (from stdio.h) to read it
  * 
  */
-void read_config(char * f) {
+void read_config(char * f) 
+{
         FILE * cfile;
         cfile = fopen(f, "r+");
 	
-        if(cfile == NULL){
+        if(cfile == NULL) {
                 syslog(LOG_ERR, "Error opening config file %s", f);
                 closelog();
                 exit(EXIT_FAILURE);
@@ -97,7 +98,8 @@ void read_config(char * f) {
         fclose(cfile);
 
 }
-void enable_syslog() {
+void enable_syslog() 
+{
         openlog("httpd", LOG_USER| LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL0);
         syslog(LOG_INFO, "httpd started by user %d", getuid());
 }
@@ -110,7 +112,8 @@ void enable_syslog() {
  *      * fork process twice
  *       * then chdir and open port
  *        */
-void daemonize() {
+void daemonize() 
+{
         /* Fork from the parent process */
         pid = fork();
         if (pid < 0) {
@@ -168,7 +171,8 @@ void daemonize() {
 
 
 }
-void sockify() {
+void sockify() 
+{
         listenfd = socket(AF_INET, SOCK_STREAM, 0);
         if(listenfd < 0) {
                 syslog(LOG_ERR, "Error opening socket. %s", strerror(errno));
@@ -226,7 +230,8 @@ void sockify() {
 
 }
 
-void parseWebRequest(char * req, int sock, int num_read){
+void parseWebRequest(char * req, int sock, int num_read)
+{
         int fd, nread,i;
         FILE *hfile = NULL;
         char *fullpath, method[128], url[128], buf[1024], protocol[128], htmlfile[128];
@@ -337,7 +342,7 @@ void parseWebRequest(char * req, int sock, int num_read){
                 	fprintf(logfile, "File exists. \n");
                 	fflush(logfile);
                 	hfile = fopen(fullpath, "r");
-                	if(hfile == NULL){
+                	if(hfile == NULL) {
                         	fprintf(logfile, "Error opening: %s\n", fullpath);
 		        	fflush(logfile);
                         	write (sock, verboten_response, strlen (verboten_response));
@@ -361,7 +366,8 @@ void parseWebRequest(char * req, int sock, int num_read){
         }
 }
 		
-void open_log(char * ld, char * l){
+void open_log(char * ld, char * l)
+{
         if ((chdir(ld)) < 0) {
                 syslog(LOG_ERR, "Failed to chdir to %s", conf.webroot);
                 perror("chdir");
