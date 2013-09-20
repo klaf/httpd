@@ -297,8 +297,8 @@ void parseWebRequest(char * req, int sock, int num_read){
                 write (sock, response, strlen (response));
     	}
 	/* Prevent directory traversal */
-	else if((str = strstr(url, "..")) != NULL) {
-		fprintf(logfile, "request contained ..\n");
+	else if((str = strstr(url, "..")) != NULL || (str = strstr(url, "%2E")) != NULL || (str = strstr(url, "\056")) != NULL) {
+		fprintf(logfile, "Bad request. File contained ..\n");
 		fflush(logfile);
 		write (sock, bad_request_response, strlen (bad_request_response));
 	}
