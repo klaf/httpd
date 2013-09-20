@@ -302,72 +302,63 @@ void parseWebRequest(char * req, int sock, int num_read){
 		fflush(logfile);
 		write (sock, bad_request_response, strlen (bad_request_response));
 	}
-    else {
-      /* A valid request.  Process it.  */
-        if(strncmp(url, "/\0", 2)==0) {
-                strncpy(htmlfile, "/index.html", sizeof(htmlfile));
-                fprintf(logfile, "html file is %s\n", htmlfile);
-                fflush(logfile);
+    	else {
+      		/* A valid request.  Process it.  */
+        	if(strncmp(url, "/\0", 2)==0) {
+                	strncpy(htmlfile, "/index.html", sizeof(htmlfile));
+                	fprintf(logfile, "html file is %s\n", htmlfile);
+                	fflush(logfile);
 
-                fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
-                sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
-                fprintf(logfile, "full path is %s\n", fullpath);
-                fflush(logfile);
+                	fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
+                	sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
+                	fprintf(logfile, "full path is %s\n", fullpath);
+                	fflush(logfile);
 
+        	}
+        	else {
+                	strncpy(htmlfile, url, sizeof(htmlfile));
+                	fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
+                	sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
+                	fprintf(logfile, "full path is %s\n", fullpath);
+                	fflush(logfile);
+
+
+        	}
+
+		/*TODO add check to see if file is a directory, and handle that*/
+        	if((stat(fullpath, &file_stats)) == -1) {
+                	/*Unable to find file*/
+                	fprintf(logfile, "Error finding: %s\n", fullpath);
+                	fflush(logfile);
+                	write (sock, not_found_response, strlen (not_found_response));
+        	}
+        	else {
+
+                	fprintf(logfile, "File exists. \n");
+                	fflush(logfile);
+                	hfile = fopen(fullpath, "r");
+                	if(hfile == NULL){
+                        	fprintf(logfile, "Error opening: %s\n", fullpath);
+		        	fflush(logfile);
+                        	write (sock, verboten_response, strlen (verboten_response));
+                	}
+                	else {
+                        	/*read file contents into buffer and send back to client*/
+                        	fseek(hfile, 0, SEEK_END);
+                        	long fsize = ftell(hfile);
+                        	fseek(hfile, 0, SEEK_SET);
+
+                        	char *string = malloc(fsize + 1);
+                        	fread(string, fsize, 1, hfile);
+                        	fclose(hfile);
+
+                        	string[fsize] = 0;
+                        	write (sock, ok_response, strlen (ok_response));
+                        	write (sock, string, strlen(string));
+
+                	}
+        	}	
         }
-        else {
-                strncpy(htmlfile, url, sizeof(htmlfile));
-                fullpath = malloc(snprintf(NULL, 0, "%s%s", conf.webroot, htmlfile) + 1);
-                sprintf(fullpath, "%s%s", conf.webroot, htmlfile);
-                fprintf(logfile, "full path is %s\n", fullpath);
-                fflush(logfile);
-
-
-        }
-
-	/*TODO add check to see if file is a directory, and handle that*/
-        if((stat(fullpath, &file_stats)) == -1) {
-                /*Unable to find file*/
-                fprintf(logfile, "Error finding: %s\n", fullpath);
-                fflush(logfile);
-                write (sock, not_found_response, strlen (not_found_response));
-        }
-        else {
-
-                fprintf(logfile, "File exists. \n");
-                fflush(logfile);
-                hfile = fopen(fullpath, "r");
-                if(hfile == NULL){
-                        fprintf(logfile, "Error opening: %s\n", fullpath);
-		        fflush(logfile);
-                        write (sock, verboten_response, strlen (verboten_response));
-
-
-                }
-                else {
-                        /*read file contents into buffer and send back to client*/
-                        fseek(hfile, 0, SEEK_END);
-                        long fsize = ftell(hfile);
-                        fseek(hfile, 0, SEEK_SET);
-
-                        char *string = malloc(fsize + 1);
-                        fread(string, fsize, 1, hfile);
-                        fclose(hfile);
-
-                        string[fsize] = 0;
-                        write (sock, ok_response, strlen (ok_response));
-                        write (sock, string, strlen(string));
-
-                }
-
-        }
-
-
-
-
-        }
-
-
 }
 		
 void open_log(char * ld, char * l){
