@@ -38,5 +38,6 @@ void wlog(FILE * f, const char * msg, ...)
         sprintf(line, "%s %s", curtime, msg);
         va_start(ap, msg);
         vfprintf(f, line, ap);
+	va_end(ap);
         fflush(f);
 }
