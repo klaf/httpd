@@ -74,7 +74,7 @@ void read_config(char * f) {
         }
         else {
                 printf("Config file: %s successfully opened!\n", f);
-                if(fscanf(cfile, "PORT=%d\nWEBROOT=%128s\nLOGDIR=%128s\nLOG=%128s", &conf.port, conf.webroot, conf.logdir, conf.log) == 4) {
+                if(fscanf(cfile, "PORT=%d\nWEBROOT=%127s\nLOGDIR=%127s\nLOG=%127s", &conf.port, conf.webroot, conf.logdir, conf.log) == 4) {
                         if(conf.port < 1025 && conf.port > 65534) {
                                 syslog(LOG_ERR, "Error! port number not in range 1025 - 65534. Choose another port. :(");
                                 closelog();
@@ -278,7 +278,7 @@ void parseWebRequest(char * req, int sock, int num_read){
                 "</html>\n";
         fprintf(logfile, "Full request is as follows: %s\n", req);
 	fflush(logfile);
-        sscanf(req, "%128s %128s %128s", method, url, protocol);
+        sscanf(req, "%127s %127s %127s", method, url, protocol);
         if (strcmp (protocol, "HTTP/1.0") && strcmp (protocol, "HTTP/1.1")) {
                 /* We don't understand this protocol.  Report a bad response.  */
                 fprintf(logfile, "We did not understand the request.\n");
