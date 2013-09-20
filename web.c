@@ -57,12 +57,10 @@ void parseWebRequest(char * req, int sock, int num_read)
                 " </body>\n"
                 "</html>\n";
         wlog(logfile, "Full request is as follows: %s\n", req);
-        /*fflush(logfile);*/
         sscanf(req, "%127s %127s %127s", method, url, protocol);
         if (strcmp (protocol, "HTTP/1.0") && strcmp (protocol, "HTTP/1.1")) {
                 /* We don't understand this protocol.  Report a bad response.  */
                 wlog(logfile, "We did not understand the request.\n");
-                //fflush(logfile);
                 write (sock, bad_request_response, strlen (bad_request_response));
         }
         else if (strcmp (method, "GET")) {
@@ -76,7 +74,6 @@ void parseWebRequest(char * req, int sock, int num_read)
         /* Prevent directory traversal */
         else if((str = strstr(url, "..")) != NULL || (str = strstr(url, "%2E%2E")) != NULL || (str = strstr(url, "\056\056")) != NULL) {
                 wlog(logfile, "Bad request. File contained ..\n");
-                //fflush(logfile);
                 write (sock, bad_request_response, strlen (bad_request_response));
         }
         else {
@@ -84,12 +81,10 @@ void parseWebRequest(char * req, int sock, int num_read)
                 if(strncmp(url, "/\0", 2)==0) {
                         strncpy(htmlfile, "/index.html", sizeof(htmlfile));
                         wlog(logfile, "html file is %s\n", htmlfile);
-                        //fflush(logfile);
 
                         fullpath = malloc(snprintf(NULL, 0, "%s%s", webroot_fullpath, htmlfile) + 1);
                         sprintf(fullpath, "%s%s", webroot_fullpath, htmlfile);
                         wlog(logfile, "full path is %s\n", fullpath);
-                        //fflush(logfile);
 
                 }
                 else {
@@ -97,7 +92,6 @@ void parseWebRequest(char * req, int sock, int num_read)
                         fullpath = malloc(snprintf(NULL, 0, "%s%s", webroot_fullpath, htmlfile) + 1);
                         sprintf(fullpath, "%s%s", webroot_fullpath, htmlfile);
                         wlog(logfile, "full path is %s\n", fullpath);
-                        //fflush(logfile);
 
 
                 }
@@ -105,7 +99,6 @@ void parseWebRequest(char * req, int sock, int num_read)
                 if((stat(fullpath, &file_stats)) == -1) {
                         /*Unable to find file*/
                         wlog(logfile, "Error finding: %s\n", fullpath);
-                        //fflush(logfile);
                         write (sock, not_found_response, strlen (not_found_response));
                 }
 		/* check if request is for directory 
@@ -114,17 +107,14 @@ void parseWebRequest(char * req, int sock, int num_read)
                 else { 
 			if(S_ISDIR(file_stats.st_mode)) {
 				wlog(logfile, "Bad request. User requested a directory\n");
-				//fflush(logfile);
 				write (sock, bad_request_response, strlen (bad_request_response));
 			}
 			/*TODO handle this properly. For now we assume we are a file*/ 
 			else {
                         	wlog(logfile, "File exists. \n");
-                        	//fflush(logfile);
                         	hfile = fopen(fullpath, "r");
                         	if(hfile == NULL) {
                                 	wlog(logfile, "Error opening: %s\n", fullpath);
-                                	//fflush(logfile);
                                 	write (sock, verboten_response, strlen (verboten_response));
                         	}
                         	else {
