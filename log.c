@@ -1,3 +1,5 @@
+#include <time.h>
+#include <sys/time.h>
 #include "log.h"
 #include "terminate.h"
 #include "config.h"
@@ -20,12 +22,21 @@ void open_log(char * ld, char * l)
 }
 /* when we daemonize we close the std file descriptors. as a result we need to fflush our log file when we write to it
  * this is a wrapper function to write and flush. 
+ * this function also gets the current timestamp and writes it to the log
+ * ctime returns \n so we remove that from the string in order for the timestamp to be on the same line as the message we are logging
  */
 void wlog(FILE * f, const char * msg, ...) 
 {
-
-        va_list ap;
+	char * curtime = NULL;
+	char * line = NULL;
+	va_list ap;
+	time_t clk = time(NULL);
+    	curtime = ctime(&clk);
+	size_t len = strlen(curtime) -1;
+	if (curtime[len] == '\n') curtime[len] = '\0';
+	line = malloc(snprintf(NULL, 0, "%s %s", curtime, msg) + 1);
+        sprintf(line, "%s %s", curtime, msg);
         va_start(ap, msg);
-        vfprintf(f, msg, ap);
+        vfprintf(f, line, ap);
         fflush(f);
 }
