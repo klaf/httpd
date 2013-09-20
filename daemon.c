@@ -1,13 +1,13 @@
 #include "daemon.h"
 #include "config.h"
 /* fork process
- *  * become session leader
- *   * fork again
- *    * clear file mode creation mask
- *     * chdir and close file descriptors
- *      * fork process twice
- *       * then chdir and open port
- *        */
+ * become session leader
+ * fork again
+ * clear file mode creation mask
+ * chdir and close file descriptors
+ * fork process twice
+ * then chdir and open port
+ */
 void daemonize()
 {
         /* Fork from the parent process */

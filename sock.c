@@ -40,9 +40,6 @@ void sockify()
                                 parseWebRequest(recvBuff, connfd, r);
                                 /*s = write(connfd, recvBuff, sizeof(recvBuff));*/
                         }
-                        if(s < 0) {
-                                syslog(LOG_ERR,"Issue writing socket. Error is: %s", strerror(errno));
-                        }
 
                         close(connfd);
                         sleep(1);

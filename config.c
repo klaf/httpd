@@ -9,11 +9,11 @@ char * logdir_fullpath = NULL;
 config conf;
 
 /* read config
- *  *  added steps to validate the user input
- *   *  both WEBROOT and LOGDIR are added to homedir. If those directories don't exist under homedir, we exit.
- *    *  LOG is opened as LOGDIR + LOG. we create the file if it doesn't exist.
- *     *  we use fscanf (from stdio.h) to read it
- *      */
+ *  added steps to validate the user input
+ *  both WEBROOT and LOGDIR are added to homedir. If those directories don't exist under homedir, we exit.
+ *  LOG is opened as LOGDIR + LOG. we create the file if it doesn't exist.
+ *  we use fscanf (from stdio.h) to read it
+ */
 void read_config(char * f)
 {
         FILE * cfile;
@@ -57,8 +57,8 @@ void read_config(char * f)
 			}
 
 	                /* validate conf.webroot & conf.logdir
- *  			 * must be subdirectory of homedir, (stat homedir + conf.webroot and homedir + conf.logdir) otherwise we assume malicious intent and exit
- *  			                          */
+   			 * must be subdirectory of homedir, (stat homedir + conf.webroot and homedir + conf.logdir) otherwise we assume malicious intent and exit
+   			 */
 
 			/* ensure webroot_fullpath is big enough to handle homedir + webroot */
 			webroot_fullpath = malloc(snprintf(NULL, 0, "%s%s%s", homedir, slash, conf.webroot) + 1);
