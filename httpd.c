@@ -1,15 +1,14 @@
-/*  mini-httpd v0.1
+/*  mini-httpd v0.2
  *  Tiny httpd written in C for Linux.
  *  Copyright (C) 2013  Peter Malone
  *  Licensed under GPLv2. See the LICENSE file for details.
  * 
  * 
- *  v0.2 TODO LIST:
- *          	1. Add logger
- *          	2. Add threading
- *          	3. Add signals
- *          	4. Add HTTP POST
- *          	5. Secure, secure, secure!
+ *  v0.3 TODO LIST:
+ *          	1. Add threading
+ *          	2. Add signals
+ *          	3. Add HTTP POST
+ *          	4. Secure, secure, secure!
  *
  */
 
