@@ -41,6 +41,7 @@ typedef struct {
 } config;
 config conf;
 char * conffile = "httpd.conf";
+char * homedir = NULL;
 FILE * logfile = NULL;
 pid_t pid, sid;
 int listenfd = 0, connfd = 0;
@@ -67,6 +68,7 @@ int main(void) {
 void read_config(char * f) {
         FILE * cfile;
         cfile = fopen(f, "r+");
+	
         if(cfile == NULL){
                 syslog(LOG_ERR, "Error opening config file %s", f);
                 closelog();
@@ -229,6 +231,7 @@ void parseWebRequest(char * req, int sock, int num_read){
         FILE *hfile = NULL;
         char *fullpath, method[128], url[128], buf[1024], protocol[128], htmlfile[128];
         struct stat file_stats;
+	char * str;
         char * ok_response =
                 "HTTP/1.0 200 OK\n"
                 "Content-type: text/html\n"
@@ -292,10 +295,16 @@ void parseWebRequest(char * req, int sock, int num_read){
 
                 snprintf (response, sizeof (response), bad_method_response, method);
                 write (sock, response, strlen (response));
-    }
+    	}
+	/* Prevent directory traversal */
+	else if((str = strstr(url, "..")) != NULL) {
+		fprintf(logfile, "request contained ..\n");
+		fflush(logfile);
+		write (sock, bad_request_response, strlen (bad_request_response));
+	}
     else {
       /* A valid request.  Process it.  */
-        if(strncmp(url, "/\0", 2)==0 ) {
+        if(strncmp(url, "/\0", 2)==0) {
                 strncpy(htmlfile, "/index.html", sizeof(htmlfile));
                 fprintf(logfile, "html file is %s\n", htmlfile);
                 fflush(logfile);
@@ -316,7 +325,7 @@ void parseWebRequest(char * req, int sock, int num_read){
 
         }
 
-
+	/*TODO add check to see if file is a directory, and handle that*/
         if((stat(fullpath, &file_stats)) == -1) {
                 /*Unable to find file*/
                 fprintf(logfile, "Error finding: %s\n", fullpath);
