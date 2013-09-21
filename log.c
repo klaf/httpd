@@ -13,7 +13,7 @@ void enable_syslog()
 /* open logfile. logfile is read from our config file. see config.h and config.c */
 void open_log()
 {
-        if ((chdir(conf.webroot)) < 0) {
+        if ((chdir(logdir_fullpath)) < 0) {
                 terminate("Failed to chdir to %s", conf.webroot);
         }
 
