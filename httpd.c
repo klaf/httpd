@@ -16,6 +16,9 @@
 #include "config.h"
 #include "terminate.h"
 #include "daemon.h"
+#include "log.h"
+#include "web.h"
+#include "sock.h"
 int main(void)
 { 
 	enable_syslog();

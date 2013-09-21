@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <stdlib.h>      // used for exit(int)
-#include <unistd.h>      // used for fopen(char *, char*)
+#include <stdlib.h>      /* used for exit(int)*/
+#include <unistd.h>      /* used for fopen(char *, char*)*/
 #include <syslog.h>
-#include <sys/types.h>   // used for pid_t
+#include <sys/types.h>   /* used for pid_t*/
 #include <sys/stat.h>
 #include <errno.h>
 #include <sys/socket.h>

@@ -29,10 +29,11 @@ void wlog(FILE * f, const char * msg, ...)
 {
 	char * curtime = NULL;
 	char * line = NULL;
+	size_t len = 0;
 	va_list ap;
 	time_t clk = time(NULL);
     	curtime = ctime(&clk);
-	size_t len = strlen(curtime) -1;
+	len = strlen(curtime) -1;
 	if (curtime[len] == '\n') curtime[len] = '\0';
 	line = malloc(snprintf(NULL, 0, "%s %s", curtime, msg) + 1);
         sprintf(line, "%s %s", curtime, msg);

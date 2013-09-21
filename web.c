@@ -1,14 +1,17 @@
 #include "sock.h"
 #include "config.h"
-
+#include "web.h"
+#include "log.h"
 FILE * logfile = NULL;
 void parseWebRequest(char * req, int sock, int num_read)
 {
-        int fd, nread,i;
+/*        int fd, nread,i;*/
         FILE *hfile = NULL;
-        char *fullpath, method[128], url[128], buf[1024], protocol[128], htmlfile[128];
+        char *fullpath, method[128], url[128], protocol[128], htmlfile[128];
         struct stat file_stats;
         char * str;
+	long fsize = 0;
+	char * string = NULL;
         char * ok_response =
                 "HTTP/1.0 200 OK\n"
                 "Content-type: text/html\n"
@@ -120,10 +123,10 @@ void parseWebRequest(char * req, int sock, int num_read)
                         	else {
                                 	/*read file contents into buffer and send back to client*/
                                 	fseek(hfile, 0, SEEK_END);
-                                	long fsize = ftell(hfile);
+                                	fsize = ftell(hfile);
                                 	fseek(hfile, 0, SEEK_SET);
 
-                                	char *string = malloc(fsize + 1);
+                                	string = malloc(fsize + 1);
                                 	fread(string, fsize, 1, hfile);
                                 	fclose(hfile);
 

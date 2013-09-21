@@ -1,5 +1,6 @@
 #include "daemon.h"
 #include "config.h"
+#include "terminate.h"
 /* fork process
  * become session leader
  * fork again

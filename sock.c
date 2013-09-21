@@ -1,6 +1,7 @@
 #include "sock.h"
 #include "config.h"
-
+#include "terminate.h"
+#include "web.h"
 void sockify()
 {
         listenfd = socket(AF_INET, SOCK_STREAM, 0);

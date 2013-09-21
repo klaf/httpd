@@ -20,10 +20,9 @@ void read_config(char * f)
 	char * str = NULL;
 	char *slash = "/";
         struct passwd *pw = getpwuid(getuid());
-        int BUFSIZE = 128;
-        char *webroot = NULL;
+/*        char *webroot = NULL;
         char *logdir = NULL;
-        char *log = NULL;
+        char *log = NULL;*/
 	struct stat file_stats;
         if (pw) {
                 homedir = pw->pw_dir;
@@ -41,7 +40,7 @@ void read_config(char * f)
         }
         else {
                 printf("Config file: %s successfully opened!\n", f);
-                if(fscanf(cfile, "PORT=%d\nWEBROOT=%127s\nLOGDIR=%127s\nLOG=%127s", &conf.port, conf.webroot, conf.logdir, conf.log) == 4) {
+                if(fscanf(cfile, "PORT=%hu\nWEBROOT=%127s\nLOGDIR=%127s\nLOG=%127s", &conf.port, conf.webroot, conf.logdir, conf.log) == 4) {
                         if(conf.port < 1025 && conf.port > 65534) {
                                 terminate("Fatal Error! port number not in range 1025 - 65534. Choose another port. :(");
                         }
