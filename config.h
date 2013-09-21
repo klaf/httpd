@@ -6,10 +6,10 @@ typedef struct {
         char log[128];
 } config;
 extern config conf;
-extern char * conffile;
+extern const char * conffile;
 extern char * homedir;
 extern char * webroot_fullpath;
 extern char * logdir_fullpath;
 extern FILE * logfile;
-void read_config(char *);
+void read_config(const char *);
 

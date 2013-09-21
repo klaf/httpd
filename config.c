@@ -2,7 +2,7 @@
 #include "terminate.h"
 #include "config.h"
 
-char * conffile = "httpd.conf";
+const char * conffile = "httpd.conf";
 char * homedir = NULL;
 char * webroot_fullpath = NULL;
 char * logdir_fullpath = NULL;
@@ -14,7 +14,7 @@ config conf;
  *  LOG is opened as LOGDIR + LOG. we create the file if it doesn't exist.
  *  we use fscanf (from stdio.h) to read it
  */
-void read_config(char * f)
+void read_config(const char * f)
 {
         FILE * cfile;
 	char * str = NULL;
