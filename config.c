@@ -14,7 +14,7 @@ config conf;
  *  LOG is opened as LOGDIR + LOG. we create the file if it doesn't exist.
  *  we use fscanf (from stdio.h) to read it
  */
-void read_config(const char * f)
+void read_config()
 {
         FILE * cfile;
 	char * str = NULL;
@@ -33,13 +33,13 @@ void read_config(const char * f)
         if(homedir == NULL) {
                 terminate("Fatal Error! Could not read pw->pw_dir.\n");
         }
-        cfile = fopen(f, "r+");
+        cfile = fopen(conffile, "r+");
 
         if(cfile == NULL) {
                 terminate("Fatal Error! Error opening config file");
         }
         else {
-                printf("Config file: %s successfully opened!\n", f);
+                printf("Config file: %s successfully opened!\n", conffile);
                 if(fscanf(cfile, "PORT=%hu\nWEBROOT=%127s\nLOGDIR=%127s\nLOG=%127s", &conf.port, conf.webroot, conf.logdir, conf.log) == 4) {
                         if(conf.port < 1025 && conf.port > 65534) {
                                 terminate("Fatal Error! port number not in range 1025 - 65534. Choose another port. :(");

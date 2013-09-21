@@ -11,9 +11,9 @@ void enable_syslog()
         syslog(LOG_INFO, "httpd started by user %d", getuid());
 }
 /* open logfile. logfile is read from our config file. see config.h and config.c */
-void open_log(char * ld)
+void open_log()
 {
-        if ((chdir(ld)) < 0) {
+        if ((chdir(conf.webroot)) < 0) {
                 terminate("Failed to chdir to %s", conf.webroot);
         }
 

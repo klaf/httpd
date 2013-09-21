@@ -22,8 +22,8 @@
 int main(void)
 { 
 	enable_syslog();
-        read_config(conffile);
-	open_log(logdir_fullpath);
+        read_config();
+	open_log();
         daemonize();
         sockify();
         closelog();
