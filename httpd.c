@@ -23,7 +23,7 @@ int main(void)
 { 
 	enable_syslog();
         read_config(conffile);
-	open_log(logdir_fullpath, conf.log);
+	open_log(logdir_fullpath);
         daemonize();
         sockify();
         closelog();
