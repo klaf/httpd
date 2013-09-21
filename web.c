@@ -82,7 +82,7 @@ void parseWebRequest(char * req, int sock, int num_read)
         else {
                 /* A valid request.  Process it.  */
                 if(strncmp(url, "/\0", 2)==0) {
-                        strncpy(htmlfile, "/index.html", sizeof(htmlfile));
+                        strncpy(htmlfile, "/index.html", sizeof(htmlfile) -1);
                         wlog(logfile, "html file is %s\n", htmlfile);
 
                         fullpath = malloc(snprintf(NULL, 0, "%s%s", webroot_fullpath, htmlfile) + 1);
@@ -91,7 +91,7 @@ void parseWebRequest(char * req, int sock, int num_read)
 
                 }
                 else {
-                        strncpy(htmlfile, url, sizeof(htmlfile));
+                        strncpy(htmlfile, url, sizeof(htmlfile) -1);
                         fullpath = malloc(snprintf(NULL, 0, "%s%s", webroot_fullpath, htmlfile) + 1);
                         sprintf(fullpath, "%s%s", webroot_fullpath, htmlfile);
                         wlog(logfile, "full path is %s\n", fullpath);
