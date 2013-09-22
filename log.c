@@ -14,7 +14,7 @@ void enable_syslog()
 void open_log()
 {
         if ((chdir(logdir_fullpath)) < 0) {
-                terminate("Failed to chdir to %s", conf.webroot);
+                terminate("Failed to chdir to %s", logdir_fullpath);
         }
 
         logfile = fopen(conf.log, "a+");
