@@ -21,9 +21,7 @@ void processConnection(void * arg)
 	}
 
         close(*conn);
-//	pthread_exit((void*)conn);
 	pthread_exit(0);
-//	sleep(1);
 
 
 
@@ -64,18 +62,6 @@ void sockify()
         		pthread_t thread;
 		        pthread_create(&thread, NULL, (void *) processConnection, (void*) &connfd);
 			pthread_join(thread, NULL);
-		/*	bzero(recvBuff,sizeof(recvBuff));
-                        r = read(connfd, recvBuff,sizeof(recvBuff));
-                        if(r < 0) {
-                                syslog(LOG_ERR,"Issue reading buffer. Error is: %s", strerror(errno));
-                        }
-                        else {
-                                parseWebRequest(recvBuff, connfd, r);
-                        }
-
-                        close(connfd);
-                        sleep(1);
-		*/
 	       }
                 else {
 
