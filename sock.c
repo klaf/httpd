@@ -2,15 +2,46 @@
 #include "config.h"
 #include "terminate.h"
 #include "web.h"
+#include <pthread.h>
+void processConnection(void * arg)
+{
+
+	int r;
+	char recvBuff[8192];
+	int *conn = (int*) arg;
+	bzero(recvBuff,sizeof(recvBuff));
+
+	r = read(*conn, recvBuff,sizeof(recvBuff));
+	if(r < 0) {
+		     syslog(LOG_ERR,"Issue reading buffer. Error is: %s", strerror(errno));
+	}
+	else {
+			parseWebRequest(recvBuff, *conn, r);
+
+	}
+
+        close(*conn);
+//	pthread_exit((void*)conn);
+	pthread_exit(0);
+//	sleep(1);
+
+
+
+}
+
 void sockify()
 {
-        listenfd = socket(AF_INET, SOCK_STREAM, 0);
+	int listenfd, connfd;
+	struct sockaddr_in serv_addr;
+	int t;
+
+	pthread_t thread;
+	listenfd = socket(AF_INET, SOCK_STREAM, 0);
         if(listenfd < 0) {
                 terminate("Error opening socket. %s", strerror(errno));
         }
 
         memset(&serv_addr, '0', sizeof(serv_addr));
-        memset(sendBuff, '0', sizeof(sendBuff));
 
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -20,7 +51,7 @@ void sockify()
                 terminate("Error binding port. %s", strerror(errno));
 
         }
-        t = listen(listenfd, 10);
+        t = listen(listenfd, 100);
         if( t < 0) {
                 syslog(LOG_ERR, "Error listening on socket. %s", strerror(errno));
                 exit(EXIT_FAILURE);
@@ -30,22 +61,22 @@ void sockify()
 
         while(1)
         {
-                connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-                if(connfd >= 0) {
-                        bzero(recvBuff,sizeof(recvBuff));
+               if ( (connfd = accept(listenfd, (struct sockaddr*)NULL, NULL) ) >=0) {
+                  	pthread_create(&thread, NULL, (void *) processConnection, (void*) &connfd);
+			pthread_join(thread, NULL);
+		/*	bzero(recvBuff,sizeof(recvBuff));
                         r = read(connfd, recvBuff,sizeof(recvBuff));
                         if(r < 0) {
                                 syslog(LOG_ERR,"Issue reading buffer. Error is: %s", strerror(errno));
                         }
                         else {
                                 parseWebRequest(recvBuff, connfd, r);
-                                /*s = write(connfd, recvBuff, sizeof(recvBuff));*/
                         }
 
                         close(connfd);
                         sleep(1);
-
-                }
+		*/
+	       }
                 else {
 
                         syslog(LOG_ERR, "Issue accepting connection");
