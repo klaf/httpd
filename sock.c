@@ -35,7 +35,6 @@ void sockify()
 	struct sockaddr_in serv_addr;
 	int t;
 
-	pthread_t thread;
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
         if(listenfd < 0) {
                 terminate("Error opening socket. %s", strerror(errno));
@@ -62,7 +61,8 @@ void sockify()
         while(1)
         {
                if ( (connfd = accept(listenfd, (struct sockaddr*)NULL, NULL) ) >=0) {
-                  	pthread_create(&thread, NULL, (void *) processConnection, (void*) &connfd);
+        		pthread_t thread;
+		        pthread_create(&thread, NULL, (void *) processConnection, (void*) &connfd);
 			pthread_join(thread, NULL);
 		/*	bzero(recvBuff,sizeof(recvBuff));
                         r = read(connfd, recvBuff,sizeof(recvBuff));
