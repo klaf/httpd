@@ -5,10 +5,9 @@
  * 
  * 
  *  v0.3 TODO LIST:
- *          	1. Add threading
- *          	2. Add signals
- *          	3. Add HTTP POST
- *          	4. Secure, secure, secure!
+ *          	1. Add signals
+ *          	2. Add HTTP POST
+ *          	3. Secure, secure, secure!
  *
  */
 
