@@ -5,7 +5,6 @@
 FILE * logfile = NULL;
 void parseWebRequest(char * req, int sock, int num_read)
 {
-/*        int fd, nread,i;*/
         FILE *hfile = NULL;
         char *fullpath, method[128], url[128], protocol[128], htmlfile[128];
         struct stat file_stats;

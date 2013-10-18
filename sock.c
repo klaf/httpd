@@ -10,7 +10,6 @@ void processConnection(void * arg)
 	char recvBuff[8192];
 	int *conn = (int*) arg;
 	bzero(recvBuff,sizeof(recvBuff));
-
 	r = read(*conn, recvBuff,sizeof(recvBuff));
 	if(r < 0) {
 		     syslog(LOG_ERR,"Issue reading buffer. Error is: %s", strerror(errno));
@@ -58,7 +57,7 @@ void sockify()
 
         while(1)
         {
-               if ( (connfd = accept(listenfd, (struct sockaddr*)NULL, NULL) ) >=0) {
+               if ( (connfd = accept(listenfd, (struct sockaddr*)NULL, NULL) ) >0) {
         		pthread_t thread;
 		        pthread_create(&thread, NULL, (void *) processConnection, (void*) &connfd);
 			pthread_join(thread, NULL);
